@@ -1,8 +1,14 @@
 const express = require('express')
+const colors = require('colors')
 const dotenv = require('dotenv').config()
 const { errorHandle } = require('./middleware/errorMiddleware')
+const connectDB = require('./config/db')
+
 const port = process.env.PORT || 8080
 const app = express()
+
+/* Connect to the database */
+connectDB()
 
 /* Object returned will be undefined if there are not these 2 lines
 Get the body parser
