@@ -2,10 +2,21 @@ import axios from 'axios'
 
 //? fetch from backend http: http://localhost:5050/api/users
 //? set in package.json's proxy
-const API_URL = '/api/users'
+const REGISTER_URL = '/api/users'
+const LOGIN_URL = '/api/users/login'
 
 const register = async (userData) => {
-    const response = await axios.post(API_URL, userData)
+    const response = await axios.post(REGISTER_URL, userData)
+    if (response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
+    return response.data
+}
+
+const logout = () => localStorage.removeItem('user')
+
+const login = async (userData) => {
+    const response = await axios.post(LOGIN_URL, userData)
     if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
     }
@@ -13,7 +24,9 @@ const register = async (userData) => {
 }
 
 const authService = {
-    register
+    register,
+    logout,
+    login,
 }
 
 /* export all defined function */
