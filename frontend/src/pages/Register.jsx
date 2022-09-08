@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
+import { register, reset } from "../features/auth/authSlice";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,6 +13,25 @@ function Register() {
     verifiedPassword: "",
   });
   const { name, email, password, verifiedPassword } = formData;
+
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  ); // state name
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    /* Redirect when logged in */
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, dispatch, navigate]);
 
   const handleChange = (e) => {
     setFormData((prevState) => ({
@@ -21,10 +43,17 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     /* Check password matching */
     if (password !== verifiedPassword) {
-      toast.error("Password do not match!");
+      toast.error("Password does not match!");
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+      /* register user with provided input */
+      dispatch(register(userData));
     }
   };
 

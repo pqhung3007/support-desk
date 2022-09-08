@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <Router>
-        <ToastContainer />
+        <ToastContainer autoClose={2000} />
         <div className="container">
           <Header />
           <Routes>
