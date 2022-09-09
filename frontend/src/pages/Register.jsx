@@ -15,24 +15,9 @@ function Register() {
   });
   const { name, email, password, verifiedPassword } = formData;
 
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.auth
-  ); // state name
+  const { isLoading } = useSelector((state) => state.auth); // state name
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    /* Redirect when logged in */
-    if (isSuccess || user) {
-      navigate("/");
-    }
-
-    dispatch(reset());
-  }, [isError, isSuccess, user, message, dispatch, navigate]);
 
   const handleChange = (e) => {
     setFormData((prevState) => ({
@@ -54,7 +39,16 @@ function Register() {
         password,
       };
       /* register user with provided input */
-      dispatch(register(userData));
+      dispatch(register(userData))
+        //? NOTE: by unwrapping the AsyncThunkAction we can navigate the user after
+        //? getting a good response from our API or catch the AsyncThunkAction
+        //? rejection to show an error message
+        .unwrap()
+        .then((user) => {
+          toast.success(`Registered new user with name ${user.name}`);
+          navigate("/");
+        })
+        .catch(toast.error);
     }
   };
 

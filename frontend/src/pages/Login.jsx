@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
-import { login, reset } from "../features/auth/authSlice";
+import { login } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
 
 function Login() {
@@ -13,26 +13,9 @@ function Login() {
   });
   const { email, password } = formData;
 
-  const { user, isSuccess, isError, isLoading, message } = useSelector(
-    (state) => state.auth
-  ); // state name
+  const { isLoading } = useSelector((state) => state.auth); // state name
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    /* Redirect when logged in */
-    if (user && isSuccess) {
-      navigate("/");
-      console.log("Login");
-      toast.success("Logged in successfully");
-    }
-
-    dispatch(reset());
-  }, [isError, isSuccess, user, message, dispatch, navigate]);
 
   const handleChange = (e) => {
     setFormData((prevState) => ({
@@ -48,7 +31,14 @@ function Login() {
       email,
       password,
     };
-    dispatch(login(userData));
+    dispatch(login(userData))
+      /* extract payload of a fulfilled action or throw an error/payload created by reject action */
+      .unwrap()
+      .then((user) => {
+        toast.success(`Welcome back, ${user.name}`);
+        navigate("/");
+      })
+      .catch(toast.error);
   };
 
   if (isLoading) {
