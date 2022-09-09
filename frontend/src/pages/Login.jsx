@@ -27,6 +27,7 @@ function Login() {
     /* Redirect when logged in */
     if (user) {
       navigate("/");
+      console.log("Login");
       toast.success("Logged in successfully");
     }
 
