@@ -20,8 +20,9 @@ app.get('/', (req, res) => {
     res.json({ message: "Welcome to Hung's support desk" })
 })
 
-// connect api/users to the required router file
+// connect api/... to the required router file
 app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/tickets', require('./routes/ticketRoutes'))
 
 app.use(errorHandle)
 
