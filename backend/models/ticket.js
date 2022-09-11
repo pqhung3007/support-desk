@@ -6,7 +6,7 @@ const ticketSchema = mongoose.Schema({
         required: true,
         ref: 'User',
     },
-    produc: {
+    product: {
         type: String,
         required: [true, 'Please select a product'],
         enum: ['Samsung Galaxy S', 'Samsung Watch', 'Samsung Tablet', 'Samsung Earbuds'],
@@ -17,6 +17,7 @@ const ticketSchema = mongoose.Schema({
     },
     status: {
         type: String,
+        required: true,
         enum: ['new', 'open', 'closed'],
         default: 'new',
     },
