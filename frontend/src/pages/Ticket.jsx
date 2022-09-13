@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getTicketDetail, closeTicket } from "../features/tickets/ticketSlice";
 import Spinner from "../components/Spinner";
+import { BackButton } from "../components/BackButton";
 
 function Ticket() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function Ticket() {
   const { _id, status, createdAt, product, description } = ticket;
   return (
     <div className="ticket-page">
+      <BackButton />
       <header className="ticket-header">
         <h2>
           Ticket ID: {_id}
