@@ -22,7 +22,7 @@ const getTickets = asyncHandler(async (req, res) => {
 /* @description: Get user ticket
 @route: GET /api/tickets/:id
 @access: private */
-const getUserTicket = asyncHandler(async (req, res) => {
+const getTicketDetail = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.id)
     if (!user) {
         res.status(401)
@@ -122,4 +122,4 @@ const updateTicket = asyncHandler(async (req, res) => {
 })
 
 
-module.exports = { getTickets, getUserTicket, createTicket, deleteTicket, updateTicket }
+module.exports = { getTickets, getTicketDetail, createTicket, deleteTicket, updateTicket }
