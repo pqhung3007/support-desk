@@ -55,13 +55,6 @@ const createTicket = asyncHandler(async (req, res) => {
         throw new Error('Please add a product or description')
     }
 
-    /* get user using id store in JWT */
-    const user = await User.findById(req.user.id)
-    if (!user) {
-        res.status(401)
-        throw new Error('User not found')
-    }
-
     const ticket = await Ticket.create({
         product,
         description,
