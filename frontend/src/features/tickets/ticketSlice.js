@@ -20,9 +20,31 @@ export const createTicket = createAsyncThunk(
     }
 )
 
+// Get user tickets
+export const getTickets = createAsyncThunk(
+    'tickets/getAll',
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await ticketService.getTickets(token)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+)
+
 export const ticketSlice = createSlice({
     name: 'ticket',
     initialState,
+    extraReducers: (builder) => {
+        builder
+            .addCase(getTickets.pending, (state) => {
+                state.ticket = null
+            })
+            .addCase(getTickets.fulfilled, (state, action) => {
+                state.tickets = action.payload
+            })
+    }
 })
 
 export default ticketSlice.reducer
