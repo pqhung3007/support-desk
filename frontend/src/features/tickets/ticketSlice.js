@@ -73,6 +73,11 @@ export const ticketSlice = createSlice({
             .addCase(getTicketDetail.fulfilled, (state, action) => {
                 state.ticket = action.payload
             })
+            .addCase(closeTicket.fulfilled, (state, action) => {
+                state.tickets.map((ticket) => ticket._id === action.payload._id
+                    ? (ticket.status = 'closed')
+                    : ticket)
+            })
     }
 })
 
